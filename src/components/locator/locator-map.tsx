@@ -31,6 +31,8 @@ function FlyToSelected({ place }: { place?: PublicPlace }) {
     if (!map || !place) return;
     map.flyTo({
       center: [place.lng, place.lat],
+      // Pin sits low so the popup above it fits in the viewport.
+      offset: [0, map.getContainer().clientHeight * 0.3],
       zoom: Math.max(map.getZoom(), 14),
       duration: 800,
       essential: true,
@@ -180,10 +182,11 @@ export function LocatorMap({
             key={selected.id}
             longitude={selected.lng}
             latitude={selected.lat}
+            anchor="bottom"
             offset={26}
             closeOnClick={false}
             focusAfterOpen={false}
-            className="w-72 max-w-[calc(100vw-2rem)] p-0"
+            className="max-h-[60svh] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto p-0"
           >
             <PlaceDetails place={selected} onClose={onClearSelection} />
           </MapPopup>

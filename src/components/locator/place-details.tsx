@@ -41,7 +41,12 @@ export function PlaceDetails({
       aria-label={t("place.details", { name: place.name })}
       className="text-popover-foreground text-xs"
     >
-      <div className="bg-muted relative aspect-video overflow-hidden rounded-t-md">
+      <div
+        className={cn(
+          "bg-muted relative overflow-hidden rounded-t-md",
+          place.photo ? "aspect-video" : "h-12",
+        )}
+      >
         {place.photo ? (
           <Image
             src={place.photo.src}
@@ -51,8 +56,8 @@ export function PlaceDetails({
             className="object-cover"
           />
         ) : (
-          <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-1">
-            <ImageOff className="size-5" aria-hidden />
+          <div className="text-muted-foreground flex h-full items-center gap-1.5 px-3">
+            <ImageOff className="size-4" aria-hidden />
             <span>{t("place.noPhoto")}</span>
           </div>
         )}
