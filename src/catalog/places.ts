@@ -55,7 +55,7 @@ export const candidates: Candidate[] = [
     sourceGroup: "书店",
     status: "published",
     verificationNotes:
-      "Address on the venue's X profile and in the national corporate registry (room 203); a 2026 visit report confirms the 2F shop. GSI geocode resolves to block 37 only.",
+      "Address on the venue's X profile and in the national corporate registry (room 203); a 2026 visit report confirms the 2F shop. GSI resolves 1-37 only. Pin is the OpenStreetMap centroid of 友田三和ビル (way 231778918), the building named in the address.",
     reviewNotes:
       "Hours seen only via a mirror of the venue's X posts (10:00–18:00, closed Mon); omitted until confirmed.",
     location: {
@@ -70,8 +70,8 @@ export const candidates: Candidate[] = [
       tags: ["chineseBooks", "library", "independentPublishing", "talks"],
       address: "東京都千代田区神田神保町1-37-4 友田三和ビル203",
       ward: "chiyoda",
-      lat: 35.694752,
-      lng: 139.759933,
+      lat: 35.694774,
+      lng: 139.759891,
       website: "https://x.com/outsider_book",
       sources: [
         {
@@ -115,7 +115,7 @@ export const candidates: Candidate[] = [
     sourceGroup: "书店",
     status: "published",
     verificationNotes:
-      "Official about page gives address and hours. GSI geocode resolves to block 28 only.",
+      "Official about page gives address and hours. GSI resolves 2-28 only (35.697849, 139.756638). Pin is the geocoding.jp point for the full address 2-28-4, checked 2026-10-03: https://www.geocoding.jp/?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E7%A5%9E%E7%94%B0%E7%A5%9E%E4%BF%9D%E7%94%BA2-28-4",
     location: {
       name: "ODY CELL",
       alternateNames: [],
@@ -129,8 +129,8 @@ export const candidates: Candidate[] = [
       ],
       address: "東京都千代田区神田神保町2-28-4 2F",
       ward: "chiyoda",
-      lat: 35.697849,
-      lng: 139.756638,
+      lat: 35.697958,
+      lng: 139.756603,
       website: "https://odycell.space/",
       sources: [
         {
@@ -247,11 +247,11 @@ export const candidates: Candidate[] = [
     id: "empathy-gallery",
     sourceName: "共感画廊 | Emparhy Gallery",
     sourceGroup: "画廊/艺术空间",
-    status: "published",
+    status: "draft",
     verificationNotes:
       "Collected spelling 'Emparhy' resolves to Empathy Gallery (エンパシー株式会社); official access page gives address. GSI geocode at building number.",
     reviewNotes:
-      "Venue sources do not describe a Chinese connection; included from the source collection. Maintainer to confirm the description.",
+      "Unpublished: venue sources do not describe a Chinese connection. Confirm that before publishing.",
     location: {
       name: "Empathy Gallery",
       alternateNames: [
@@ -551,11 +551,11 @@ export const candidates: Candidate[] = [
     id: "aoyama-daruma",
     sourceName: "AOYAMA DARUMA",
     sourceGroup: "饮品/工艺/杂货",
-    status: "published",
+    status: "draft",
     verificationNotes:
-      "Official site and access page give address. GSI geocode at building number.",
+      "Official site and access page give address. GSI geocode at building number. Official pages disagree on hours (Wed–Sat 12–18 vs Wed–Sun 12–19).",
     reviewNotes:
-      "Official pages disagree on hours (Wed–Sat 12–18 vs Wed–Sun 12–19), so hours are omitted. Venue sources do not describe a Chinese connection; included from the source collection.",
+      "Unpublished: venue sources do not describe a Chinese connection. Confirm that, and reconcile the hours, before publishing.",
     location: {
       name: "AOYAMA DARUMA",
       alternateNames: ["Aoyama Daruma"],
@@ -618,7 +618,7 @@ export const candidates: Candidate[] = [
     sourceGroup: "其他",
     status: "published",
     verificationNotes:
-      "Official access and facility pages give address, hours and mission. HSK test-venue listing from hskibt.jp (third-party). GSI geocode resolves to block 19 only.",
+      "Official access and facility pages give address, hours and mission. HSK test-venue listing from hskibt.jp (third-party). GSI resolves 6-19 only (35.667645, 139.734299). Pin is the geocoding.jp point for 6-19-46, checked 2026-10-03: https://www.geocoding.jp/?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%AF%E5%8C%BA%E8%B5%A4%E5%9D%826-19-46",
     location: {
       name: "多元文化会館",
       alternateNames: ["多元文化会馆", "多元文化會館", "Tagen Bunka Kaikan"],
@@ -626,8 +626,8 @@ export const candidates: Candidate[] = [
       tags: ["events", "gallery", "talks", "workshop"],
       address: "東京都港区赤坂6-19-46 TBKビル",
       ward: "minato",
-      lat: 35.667645,
-      lng: 139.734299,
+      lat: 35.667733,
+      lng: 139.733409,
       website: "https://www.tagenbunka.com/",
       sources: [
         {

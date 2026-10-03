@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -12,11 +12,41 @@ import { cn } from "@/lib/utils";
 import { LocatorMap } from "./locator-map";
 import { PlaceList } from "./place-list";
 
+const NEAR_ME_STORAGE = "near-me";
+
+function readStoredPosition() {
+  try {
+    const raw = sessionStorage.getItem(NEAR_ME_STORAGE);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      !("lat" in parsed) ||
+      !("lng" in parsed) ||
+      typeof parsed.lat !== "number" ||
+      typeof parsed.lng !== "number"
+    ) {
+      return null;
+    }
+    return { lat: parsed.lat, lng: parsed.lng };
+  } catch {
+    return null;
+  }
+}
+
 /** Search, filters, selection and mobile view live in the URL so links and language switches restore them. */
 export function Locator({ places }: { places: PublicPlace[] }) {
   const t = useTranslations();
   const searchParams = useSearchParams();
   const [nearMe, setNearMe] = useState<NearMe>({ status: "idle" });
+  // Language switches remount the page. The position stays in this tab, not in the URL.
+  useEffect(() => {
+    const position = readStoredPosition();
+    // After hydration: the server render has no sessionStorage, so this cannot run during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (position) setNearMe({ status: "ready", position });
+  }, []);
   // Local so typing never waits on a URL round-trip; mirrored into `?q=`.
   const urlQuery = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(urlQuery);
@@ -88,11 +118,15 @@ export function Locator({ places }: { places: PublicPlace[] }) {
     }
     setNearMe({ status: "locating" });
     navigator.geolocation.getCurrentPosition(
-      ({ coords }) =>
-        setNearMe({
-          status: "ready",
-          position: { lat: coords.latitude, lng: coords.longitude },
-        }),
+      ({ coords }) => {
+        const position = { lat: coords.latitude, lng: coords.longitude };
+        try {
+          sessionStorage.setItem(NEAR_ME_STORAGE, JSON.stringify(position));
+        } catch {
+          // Sorting still applies for this view when storage is blocked.
+        }
+        setNearMe({ status: "ready", position });
+      },
       (error) =>
         setNearMe({
           status: "error",
@@ -147,7 +181,14 @@ export function Locator({ places }: { places: PublicPlace[] }) {
           onDismissUnavailable={() => navigate({ place: null }, "replace")}
           nearMe={nearMe}
           onLocate={locate}
-          onStopNearMe={() => setNearMe({ status: "idle" })}
+          onStopNearMe={() => {
+            try {
+              sessionStorage.removeItem(NEAR_ME_STORAGE);
+            } catch {
+              // The in-memory sort is cleared either way.
+            }
+            setNearMe({ status: "idle" });
+          }}
         />
         <section
           aria-label={t("map.label")}
@@ -161,9 +202,6 @@ export function Locator({ places }: { places: PublicPlace[] }) {
             selected={selected}
             onSelect={(id) => navigate({ place: id }, "push")}
             onClearSelection={() => navigate({ place: null }, "replace")}
-            userPosition={
-              nearMe.status === "ready" ? nearMe.position : undefined
-            }
           />
         </section>
       </div>

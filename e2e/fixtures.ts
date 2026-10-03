@@ -53,18 +53,42 @@ export async function stubGeolocation(
       calls.count += 1;
       setTimeout(() => {
         if ("errorCode" in result) {
-          error?.({
+          const failure: GeolocationPositionError = {
             code: result.errorCode,
             message: "stub",
             PERMISSION_DENIED: 1,
             POSITION_UNAVAILABLE: 2,
             TIMEOUT: 3,
-          } as GeolocationPositionError);
+          };
+          error?.(failure);
         } else {
-          success({
-            coords: { latitude: result.lat, longitude: result.lng },
+          const position: GeolocationPosition = {
+            coords: {
+              latitude: result.lat,
+              longitude: result.lng,
+              accuracy: 1,
+              altitude: null,
+              altitudeAccuracy: null,
+              heading: null,
+              speed: null,
+              toJSON() {
+                return {
+                  latitude: this.latitude,
+                  longitude: this.longitude,
+                  accuracy: this.accuracy,
+                  altitude: this.altitude,
+                  altitudeAccuracy: this.altitudeAccuracy,
+                  heading: this.heading,
+                  speed: this.speed,
+                };
+              },
+            },
             timestamp: Date.now(),
-          } as GeolocationPosition);
+            toJSON() {
+              return { coords: this.coords.toJSON(), timestamp: this.timestamp };
+            },
+          };
+          success(position);
         }
       }, 50);
     };
@@ -75,5 +99,9 @@ export async function stubGeolocation(
 }
 
 export function geoCalls(page: Page) {
-  return page.evaluate(() => Reflect.get(window, "__geoCalls") as number);
+  return page.evaluate(() => {
+    const value: unknown = Reflect.get(window, "__geoCalls");
+    if (typeof value !== "number") throw new Error("geolocation was not stubbed");
+    return value;
+  });
 }

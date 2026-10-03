@@ -49,6 +49,7 @@
   "place": {
     "details": "{name}的詳細資訊",
     "alternateNames": "其他名稱",
+    "tags": "標籤",
     "address": "地址",
     "hours": "營業時間",
     "hoursUnknown": "暫無營業時間資訊，造訪前請先確認。",

@@ -7,14 +7,12 @@ import { catchError } from "next/error";
 import { useLocale, useTranslations } from "next-intl";
 
 import type { PublicPlace } from "@/catalog/catalog";
-import type { Position } from "@/catalog/search";
 import {
   Map,
   MapControls,
   MapMarker,
   MapPopup,
   MarkerContent,
-  MarkerTooltip,
   useMap,
 } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
@@ -69,6 +67,8 @@ function LocalizedLabels() {
           map.setLayoutProperty(layer.id, "text-field", textField);
         }
       }
+      map.getContainer().dataset.labelLocale = locale;
+      map.getContainer().dataset.labelKeys = keys.join(" ");
     };
     if (map.isStyleLoaded()) relabel();
     map.on("style.load", relabel);
@@ -115,13 +115,11 @@ export function LocatorMap({
   selected,
   onSelect,
   onClearSelection,
-  userPosition,
 }: {
   places: PublicPlace[];
   selected?: PublicPlace;
   onSelect: (id: string) => void;
   onClearSelection: () => void;
-  userPosition?: Position;
 }) {
   const [basemapFailed, setBasemapFailed] = useState(false);
 
@@ -162,20 +160,8 @@ export function LocatorMap({
                 <PlacePin active={place.id === selected?.id} />
               </button>
             </MarkerContent>
-            <MarkerTooltip
-              offset={24}
-              className="bg-foreground text-background"
-            >
-              {place.name}
-            </MarkerTooltip>
           </MapMarker>
         ))}
-
-        {userPosition && (
-          <MapMarker longitude={userPosition.lng} latitude={userPosition.lat}>
-            <MarkerContent />
-          </MapMarker>
-        )}
 
         {selected && (
           <MapPopup
