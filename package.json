@@ -5,8 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:fixture": "CATALOG=fixture NEXT_DIST_DIR=.next-fixture next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:e2e:live": "LIVE_MAP=1 playwright test e2e/live-map.spec.ts --project=desktop"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

@@ -6,7 +6,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // Vendored from the mapcn registry; keep identical to upstream so it can be re-pulled.
+    // Vendored from the mapcn registry; only local change is the `onError` prop, reapply it after re-pulling.
     files: ["src/components/ui/map.tsx"],
     rules: {
       "react-hooks/refs": "off",
@@ -20,6 +20,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".next-fixture/**",
+    "test-results/**",
+    "playwright-report/**",
   ]),
 ]);
 
