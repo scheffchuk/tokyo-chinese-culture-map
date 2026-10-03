@@ -10,7 +10,6 @@ const eslintConfig = defineConfig([
     files: ["src/components/ui/map.tsx"],
     rules: {
       "react-hooks/refs": "off",
-      "react-hooks/set-state-in-effect": "off",
     },
   },
   // Override default ignores of eslint-config-next.
@@ -21,6 +20,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     ".next-fixture/**",
+    ".vercel/**",
     "test-results/**",
     "playwright-report/**",
   ]),

@@ -11,6 +11,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -260,7 +261,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
   const [mapInstance, setMapInstance] = useState<MapLibreGL.Map | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isStyleLoaded, setIsStyleLoaded] = useState(false);
-  const [pendingStyle, setPendingStyle] = useState<MapStyleOption | null>(null);
   const currentStyleRef = useRef<MapStyleOption | null>(null);
   const styleSwapInFlightRef = useRef(false);
   const internalUpdateRef = useRef(false);
@@ -376,30 +376,22 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     internalUpdateRef.current = false;
   }, [mapInstance, isControlled, viewport]);
 
-  // Handle style change: close the gate (so layer children tear down and
-  // re-add on the incoming style) - the swap itself is staged to the effect below.
+  const desiredStyle =
+    resolvedTheme === "dark" ? mapStyles.dark : mapStyles.light;
+  // Tear the style gate down during render so layer children unmount before setStyle.
+  if (mapInstance && currentStyleRef.current !== desiredStyle && isStyleLoaded) {
+    setIsStyleLoaded(false);
+  }
+
   useEffect(() => {
     if (!mapInstance || !resolvedTheme) return;
-
-    const newStyle =
-      resolvedTheme === "dark" ? mapStyles.dark : mapStyles.light;
-
-    if (currentStyleRef.current === newStyle) return;
-
-    currentStyleRef.current = newStyle;
-    setIsStyleLoaded(false);
-    setPendingStyle(newStyle);
-  }, [mapInstance, resolvedTheme, mapStyles]);
-
-  useEffect(() => {
-    if (!mapInstance || !pendingStyle) return;
-
-    setPendingStyle(null);
+    if (currentStyleRef.current === desiredStyle) return;
+    currentStyleRef.current = desiredStyle;
     styleSwapInFlightRef.current = true;
     // Full reload (no diff) so `style.load` fires deterministically. A
     // successful diff would never fire it, leaving isStyleLoaded stuck false.
-    mapInstance.setStyle(pendingStyle, { diff: false });
-  }, [mapInstance, pendingStyle]);
+    mapInstance.setStyle(desiredStyle, { diff: false });
+  }, [mapInstance, resolvedTheme, desiredStyle]);
 
   // Sync projection when the prop changes after mount.
   useEffect(() => {
@@ -1231,7 +1223,7 @@ type RouteContextValue = {
   /** Resolved route id — child layers namespace themselves with it. */
   id: string;
   /** True once the base source and layer are on the map. */
-  ready: boolean;
+  isReady: () => boolean;
   coordinates: [number, number][];
   /** The traveled slice of the route. Empty when `progress` is unset. */
   traveled: [number, number][];
@@ -1336,7 +1328,7 @@ function MapRoute({
   const id = propId ?? autoId;
   const sourceId = `route-source-${id}`;
   const layerId = `route-layer-${id}`;
-  const [ready, setReady] = useState(false);
+  const readyRef = useRef(false);
 
   // Callers often pass `data?.coordinates ?? []`, a fresh array each render.
   // Collapse empties to one shared instance so nothing downstream re-runs.
@@ -1383,8 +1375,8 @@ function MapRoute({
     };
   }, []);
 
-  // Add source and layer on mount
-  useEffect(() => {
+  // Layout so child effects in this commit see the layer without a state update.
+  useLayoutEffect(() => {
     if (!isLoaded || !map) return;
 
     map.addSource(sourceId, {
@@ -1412,12 +1404,11 @@ function MapRoute({
       resolveBeforeId(map, beforeId),
     );
 
-    // Children add their layers once this is set, which keeps them above the
-    // base line: child effects would otherwise run before this one.
-    setReady(true);
+    // Child effects run after this layout pass, so they see the ref without a state update.
+    readyRef.current = true;
 
     return () => {
-      setReady(false);
+      readyRef.current = false;
       try {
         if (map.getLayer(layerId)) map.removeLayer(layerId);
         if (map.getSource(sourceId)) map.removeSource(sourceId);
@@ -1467,7 +1458,7 @@ function MapRoute({
   // Siblings that mount later (alternatives arriving from a request) add
   // their layers on top, so the raise also re-runs on style changes.
   useEffect(() => {
-    if (!ready || !map || !active) return;
+    if (!readyRef.current || !map || !active) return;
 
     // Which layers exist, ignoring their order.
     let lastLayerSet = "";
@@ -1502,7 +1493,7 @@ function MapRoute({
     return () => {
       map.off("styledata", raise);
     };
-  }, [ready, map, active, layerId, beforeId]);
+  }, [isLoaded, map, active, layerId, beforeId]);
 
   // Handle click and hover events
   useEffect(() => {
@@ -1542,7 +1533,7 @@ function MapRoute({
   const contextValue = useMemo(
     () => ({
       id,
-      ready,
+      isReady: () => readyRef.current,
       coordinates,
       traveled,
       progress,
@@ -1556,7 +1547,6 @@ function MapRoute({
     }),
     [
       id,
-      ready,
       coordinates,
       traveled,
       progress,
@@ -1600,7 +1590,7 @@ function RouteProgress({
 }: RouteProgressProps) {
   const { map, isLoaded } = useMap();
   const route = useMapRoute();
-  const { ready, traveled, registerLayer, beforeId } = route;
+  const { isReady, traveled, registerLayer, beforeId } = route;
 
   const sourceId = `route-progress-source-${route.id}`;
   const layerId = `route-progress-layer-${route.id}`;
@@ -1611,7 +1601,7 @@ function RouteProgress({
 
   // Added only once the parent's layer exists, so this always paints above it.
   useEffect(() => {
-    if (!ready || !map) return;
+    if (!isReady() || !map) return;
 
     map.addSource(sourceId, {
       type: "geojson",
@@ -1652,10 +1642,10 @@ function RouteProgress({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, map]);
+  }, [isLoaded, map]);
 
   useEffect(() => {
-    if (!ready || !map) return;
+    if (!isReady() || !map) return;
 
     const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource;
     if (source) {
@@ -1668,7 +1658,7 @@ function RouteProgress({
         },
       });
     }
-  }, [ready, map, traveled, sourceId]);
+  }, [isLoaded, isReady, map, traveled, sourceId]);
 
   useEffect(() => {
     if (!isLoaded || !map || !map.getLayer(layerId)) return;
