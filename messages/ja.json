@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "東京中華文化マップ",
+    "description": "東京23区にある、中華圏とつながる書店・ギャラリー・飲食店・工房・文化施設を探せる多言語ガイド。"
+  },
+  "header": {
+    "title": "東京中華文化マップ",
+    "tagline": "東京23区の、中華圏とつながる文化スポットを確認済みの情報で紹介します。掲載は店舗の国籍や経営者を示すものではありません。"
+  },
+  "locale": {
+    "label": "言語",
+    "ja": "日本語",
+    "en": "English",
+    "zh-Hant": "繁體中文"
+  },
+  "search": {
+    "label": "スポットを検索",
+    "placeholder": "名前・内容・地域で検索"
+  },
+  "filters": {
+    "category": "カテゴリー",
+    "allCategories": "すべてのカテゴリー",
+    "ward": "区",
+    "allWards": "すべての区",
+    "clear": "条件をクリア"
+  },
+  "results": {
+    "count": "{count, plural, other {#件のスポット}}",
+    "label": "検索結果",
+    "empty": "条件に合うスポットはありません。",
+    "emptyHint": "キーワードを変えるか、条件をクリアしてください。"
+  },
+  "view": {
+    "label": "表示切り替え",
+    "list": "リスト",
+    "map": "地図"
+  },
+  "nearMe": {
+    "button": "現在地から近い順",
+    "locating": "現在地を取得中…",
+    "active": "現在地からの直線距離順",
+    "stop": "解除",
+    "distance": "直線 {km} km",
+    "denied": "位置情報の利用が許可されませんでした。通常の一覧は引き続き使えます。",
+    "unavailable": "現在地を取得できませんでした。通常の一覧は引き続き使えます。",
+    "timeout": "現在地の取得に時間がかかりすぎました。もう一度お試しください。",
+    "unsupported": "このブラウザは位置情報に対応していません。"
+  },
+  "place": {
+    "details": "{name}の詳細",
+    "alternateNames": "別名",
+    "address": "住所",
+    "hours": "営業時間",
+    "hoursUnknown": "営業時間の情報はありません。訪問前にご確認ください。",
+    "website": "公式サイト・SNS",
+    "sources": "情報源",
+    "primarySource": "運営者による情報",
+    "thirdPartySource": "第三者による情報",
+    "verified": "{date}に確認",
+    "directions": "Googleマップで経路",
+    "share": "リンクをコピー",
+    "copied": "コピーしました",
+    "close": "閉じる",
+    "noPhoto": "写真はありません",
+    "photoCredit": "写真: {credit}"
+  },
+  "unavailable": {
+    "title": "このスポットは表示できません",
+    "body": "リンク先のスポットは掲載されていないか、現在非公開です。",
+    "dismiss": "閉じる"
+  },
+  "map": {
+    "label": "スポットの地図",
+    "failed": "背景地図を読み込めませんでした。一覧・住所・経路案内は引き続き使えます。"
+  },
+  "categories": {
+    "bookstores": "書店",
+    "galleries": "ギャラリー・アートスペース",
+    "foodDrink": "飲食",
+    "shopsCrafts": "ショップ・工芸",
+    "community": "コミュニティ・サービス"
+  },
+  "tags": {
+    "chineseBooks": "中国語の本",
+    "multilingual": "多言語",
+    "independentPublishing": "独立系出版",
+    "zine": "ZINE",
+    "library": "図書室",
+    "events": "イベント",
+    "talks": "トーク",
+    "cafe": "カフェ",
+    "chineseTea": "中国茶",
+    "gallery": "展示",
+    "contemporaryArt": "現代美術",
+    "photography": "写真",
+    "studio": "スタジオ",
+    "workshop": "ワークショップ",
+    "artClasses": "美術教室",
+    "fashion": "ファッション",
+    "crafts": "工芸",
+    "indigo": "藍染"
+  },
+  "wards": {
+    "chiyoda": "千代田区",
+    "chuo": "中央区",
+    "minato": "港区",
+    "shinjuku": "新宿区",
+    "bunkyo": "文京区",
+    "taito": "台東区",
+    "sumida": "墨田区",
+    "koto": "江東区",
+    "shinagawa": "品川区",
+    "meguro": "目黒区",
+    "ota": "大田区",
+    "setagaya": "世田谷区",
+    "shibuya": "渋谷区",
+    "nakano": "中野区",
+    "suginami": "杉並区",
+    "toshima": "豊島区",
+    "kita": "北区",
+    "arakawa": "荒川区",
+    "itabashi": "板橋区",
+    "nerima": "練馬区",
+    "adachi": "足立区",
+    "katsushika": "葛飾区",
+    "edogawa": "江戸川区"
+  }
+}
