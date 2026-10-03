@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "東京華人文化地圖",
+    "description": "收錄東京23區與華人文化相關的書店、藝廊、餐飲、工藝與文化空間的多語言指南。"
+  },
+  "header": {
+    "title": "東京華人文化地圖",
+    "tagline": "以經過查證的資訊，介紹東京23區與華人文化相關的地點。收錄與否不代表店家的國籍或經營者身分。"
+  },
+  "locale": {
+    "label": "語言",
+    "ja": "日本語",
+    "en": "English",
+    "zh-Hant": "繁體中文"
+  },
+  "search": {
+    "label": "搜尋地點",
+    "placeholder": "搜尋名稱、內容、地區"
+  },
+  "filters": {
+    "category": "類別",
+    "allCategories": "所有類別",
+    "ward": "區",
+    "allWards": "所有區",
+    "clear": "清除條件"
+  },
+  "results": {
+    "count": "{count, plural, other {# 個地點}}",
+    "label": "搜尋結果",
+    "empty": "沒有符合條件的地點。",
+    "emptyHint": "請換個關鍵字或清除條件。"
+  },
+  "view": {
+    "label": "切換檢視",
+    "list": "列表",
+    "map": "地圖"
+  },
+  "nearMe": {
+    "button": "離我最近",
+    "locating": "正在取得目前位置…",
+    "active": "依直線距離排序",
+    "stop": "取消",
+    "distance": "直線 {km} 公里",
+    "denied": "未獲得位置權限，仍可照常瀏覽列表。",
+    "unavailable": "無法取得目前位置，仍可照常瀏覽列表。",
+    "timeout": "取得位置逾時，請再試一次。",
+    "unsupported": "此瀏覽器不支援定位功能。"
+  },
+  "place": {
+    "details": "{name}的詳細資訊",
+    "alternateNames": "其他名稱",
+    "address": "地址",
+    "hours": "營業時間",
+    "hoursUnknown": "暫無營業時間資訊，造訪前請先確認。",
+    "website": "官網或社群",
+    "sources": "資料來源",
+    "primarySource": "店家提供",
+    "thirdPartySource": "第三方",
+    "verified": "{date} 查證",
+    "directions": "在 Google 地圖規劃路線",
+    "share": "複製連結",
+    "copied": "已複製連結",
+    "close": "關閉",
+    "noPhoto": "暫無照片",
+    "photoCredit": "照片：{credit}"
+  },
+  "unavailable": {
+    "title": "無法顯示此地點",
+    "body": "連結中的地點未被收錄或目前未公開。",
+    "dismiss": "關閉"
+  },
+  "map": {
+    "label": "地點地圖",
+    "failed": "背景地圖無法載入。列表、地址與路線規劃仍可使用。"
+  },
+  "categories": {
+    "bookstores": "書店",
+    "galleries": "藝廊與藝術空間",
+    "foodDrink": "餐飲",
+    "shopsCrafts": "商店與工藝",
+    "community": "社群與服務"
+  },
+  "tags": {
+    "chineseBooks": "中文書",
+    "multilingual": "多語言",
+    "independentPublishing": "獨立出版",
+    "zine": "ZINE",
+    "library": "閱覽室",
+    "events": "活動",
+    "talks": "講座",
+    "cafe": "咖啡",
+    "chineseTea": "中國茶",
+    "gallery": "展覽",
+    "contemporaryArt": "當代藝術",
+    "photography": "攝影",
+    "studio": "工作室",
+    "workshop": "工作坊",
+    "artClasses": "美術課程",
+    "fashion": "時尚",
+    "crafts": "工藝",
+    "indigo": "藍染"
+  },
+  "wards": {
+    "chiyoda": "千代田區",
+    "chuo": "中央區",
+    "minato": "港區",
+    "shinjuku": "新宿區",
+    "bunkyo": "文京區",
+    "taito": "台東區",
+    "sumida": "墨田區",
+    "koto": "江東區",
+    "shinagawa": "品川區",
+    "meguro": "目黑區",
+    "ota": "大田區",
+    "setagaya": "世田谷區",
+    "shibuya": "澀谷區",
+    "nakano": "中野區",
+    "suginami": "杉並區",
+    "toshima": "豐島區",
+    "kita": "北區",
+    "arakawa": "荒川區",
+    "itabashi": "板橋區",
+    "nerima": "練馬區",
+    "adachi": "足立區",
+    "katsushika": "葛飾區",
+    "edogawa": "江戶川區"
+  }
+}

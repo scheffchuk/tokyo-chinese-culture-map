@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
+  // Lets the e2e fixture build live beside the real one.
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
 };
 
-export default nextConfig;
+export default createNextIntlPlugin()(nextConfig);

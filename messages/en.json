@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "Tokyo Chinese Culture Map",
+    "description": "A multilingual guide to Chinese-connected bookstores, galleries, food and drink, crafts and community spaces in Tokyo's 23 wards."
+  },
+  "header": {
+    "title": "Tokyo Chinese Culture Map",
+    "tagline": "Verified Chinese-connected cultural places across Tokyo's 23 wards. A listing does not imply anything about a venue's ownership or nationality."
+  },
+  "locale": {
+    "label": "Language",
+    "ja": "日本語",
+    "en": "English",
+    "zh-Hant": "繁體中文"
+  },
+  "search": {
+    "label": "Search places",
+    "placeholder": "Search names, offerings, areas"
+  },
+  "filters": {
+    "category": "Category",
+    "allCategories": "All categories",
+    "ward": "Ward",
+    "allWards": "All wards",
+    "clear": "Clear filters"
+  },
+  "results": {
+    "count": "{count, plural, one {# place} other {# places}}",
+    "label": "Results",
+    "empty": "No places match.",
+    "emptyHint": "Try another keyword or clear the filters."
+  },
+  "view": {
+    "label": "View",
+    "list": "List",
+    "map": "Map"
+  },
+  "nearMe": {
+    "button": "Near me",
+    "locating": "Finding your location…",
+    "active": "Sorted by straight-line distance",
+    "stop": "Reset",
+    "distance": "{km} km away",
+    "denied": "Location permission was denied. The directory still works as usual.",
+    "unavailable": "Your location is unavailable. The directory still works as usual.",
+    "timeout": "Finding your location took too long. Please try again.",
+    "unsupported": "This browser doesn't support location."
+  },
+  "place": {
+    "details": "Details for {name}",
+    "alternateNames": "Also known as",
+    "address": "Address",
+    "hours": "Hours",
+    "hoursUnknown": "Opening hours unavailable. Check before visiting.",
+    "website": "Website or social",
+    "sources": "Sources",
+    "primarySource": "from the venue",
+    "thirdPartySource": "third-party",
+    "verified": "Checked {date}",
+    "directions": "Directions in Google Maps",
+    "share": "Copy link",
+    "copied": "Link copied",
+    "close": "Close",
+    "noPhoto": "No photo available",
+    "photoCredit": "Photo: {credit}"
+  },
+  "unavailable": {
+    "title": "This place isn't available",
+    "body": "The linked place isn't listed or isn't public right now.",
+    "dismiss": "Dismiss"
+  },
+  "map": {
+    "label": "Map of places",
+    "failed": "The background map couldn't load. The list, addresses and directions still work."
+  },
+  "categories": {
+    "bookstores": "Bookstores",
+    "galleries": "Galleries & art spaces",
+    "foodDrink": "Food & drink",
+    "shopsCrafts": "Shops & crafts",
+    "community": "Community & services"
+  },
+  "tags": {
+    "chineseBooks": "Chinese-language books",
+    "multilingual": "Multilingual",
+    "independentPublishing": "Independent publishing",
+    "zine": "Zines",
+    "library": "Reading room",
+    "events": "Events",
+    "talks": "Talks",
+    "cafe": "Café",
+    "chineseTea": "Chinese tea",
+    "gallery": "Exhibitions",
+    "contemporaryArt": "Contemporary art",
+    "photography": "Photography",
+    "studio": "Studio",
+    "workshop": "Workshops",
+    "artClasses": "Art classes",
+    "fashion": "Fashion",
+    "crafts": "Crafts",
+    "indigo": "Indigo dyeing"
+  },
+  "wards": {
+    "chiyoda": "Chiyoda",
+    "chuo": "Chūō",
+    "minato": "Minato",
+    "shinjuku": "Shinjuku",
+    "bunkyo": "Bunkyō",
+    "taito": "Taitō",
+    "sumida": "Sumida",
+    "koto": "Kōtō",
+    "shinagawa": "Shinagawa",
+    "meguro": "Meguro",
+    "ota": "Ōta",
+    "setagaya": "Setagaya",
+    "shibuya": "Shibuya",
+    "nakano": "Nakano",
+    "suginami": "Suginami",
+    "toshima": "Toshima",
+    "kita": "Kita",
+    "arakawa": "Arakawa",
+    "itabashi": "Itabashi",
+    "nerima": "Nerima",
+    "adachi": "Adachi",
+    "katsushika": "Katsushika",
+    "edogawa": "Edogawa"
+  }
+}
