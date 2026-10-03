@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { getPublicCatalog } from "@/catalog/catalog";
+import { getPublicCatalog } from "@/catalog/publish";
 import {
   LocaleLinks,
   LocaleSwitcher,

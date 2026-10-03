@@ -201,7 +201,13 @@ export function PlaceList({
             {results.map(({ place, distance }) => {
               const active = place.id === selectedId;
               return (
-                <li key={place.id}>
+                <li
+                  key={place.id}
+                  className={cn(
+                    "rounded-md",
+                    active ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/60",
+                  )}
+                >
                   <button
                     type="button"
                     ref={(el) => {
@@ -210,12 +216,7 @@ export function PlaceList({
                     }}
                     onClick={() => onSelect(place.id)}
                     aria-current={active ? "true" : undefined}
-                    className={cn(
-                      "focus-visible:ring-ring flex w-full flex-col gap-1 rounded-md p-3 text-left text-sm outline-none focus-visible:ring-2",
-                      active
-                        ? "bg-sidebar-accent"
-                        : "hover:bg-sidebar-accent/60",
-                    )}
+                    className="focus-visible:ring-ring flex w-full flex-col gap-1 rounded-md p-3 text-left text-sm outline-none focus-visible:ring-2"
                   >
                     <span className="flex items-baseline justify-between gap-2">
                       <span className="text-foreground font-medium">
@@ -239,6 +240,21 @@ export function PlaceList({
                       {place.description}
                     </span>
                   </button>
+                  {active && (
+                    <div className="flex flex-col gap-1 px-3 pb-3 text-xs">
+                      <p lang="ja" className="text-muted-foreground">
+                        {place.address}
+                      </p>
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-foreground w-fit underline underline-offset-2"
+                      >
+                        {t("place.directions")}
+                      </a>
+                    </div>
+                  )}
                 </li>
               );
             })}

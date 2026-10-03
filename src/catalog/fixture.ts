@@ -10,7 +10,7 @@ export const fixtureCandidates: Candidate[] = [
     verificationNotes: "Fixture.",
     location: {
       name: "神田テスト書店",
-      alternateNames: ["Kanda Test Books", "神田測試書店", "神田测试书店"],
+      alternateNames: ["Kanda Test Books", "神田測試書店"],
       category: "bookstores",
       tags: ["chineseBooks", "events"],
       address: "東京都千代田区神田神保町1-1",

@@ -1,10 +1,4 @@
 import type { Locale } from "@/i18n/routing";
-import { routing } from "@/i18n/routing";
-import en from "../../messages/en.json";
-import ja from "../../messages/ja.json";
-import zhHant from "../../messages/zh-Hant.json";
-import { fixtureCandidates } from "./fixture";
-import { candidates } from "./places";
 
 export const CATEGORIES = [
   "bookstores",
@@ -114,11 +108,6 @@ export type PublicPlace = Omit<
   searchText: string;
 };
 
-const messagesByLocale = { ja, en, "zh-Hant": zhHant } satisfies Record<
-  Locale,
-  unknown
->;
-
 // Generous box around the 23 wards; catches swapped or mistyped coordinates.
 const WARD_BOUNDS = { south: 35.5, north: 35.83, west: 139.56, east: 139.92 };
 
@@ -131,7 +120,8 @@ export function normalizeSearchText(text: string) {
   return text.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-function publishable(candidate: Candidate) {
+/** The location a candidate may show publicly, or null when it must stay a draft. */
+export function publishedLocation(candidate: Candidate) {
   const location = candidate.location;
   if (candidate.status !== "published" || !location) return null;
   if (!isWard(location.ward)) return null;
@@ -142,45 +132,4 @@ function publishable(candidate: Candidate) {
     location.lng < WARD_BOUNDS.east;
   if (!inBounds) return null;
   return { ...location, ward: location.ward };
-}
-
-function toPublicPlace(
-  id: string,
-  location: Location & { ward: WardId },
-  locale: Locale,
-): PublicPlace {
-  const { description, hours, photo, ...rest } = location;
-  const searchable = [
-    location.name,
-    ...location.alternateNames,
-    location.address,
-    ...routing.locales.flatMap((each) => {
-      const messages = messagesByLocale[each];
-      return [
-        description[each],
-        messages.wards[location.ward],
-        messages.categories[location.category],
-        ...location.tags.map((tag) => messages.tags[tag]),
-      ];
-    }),
-  ];
-
-  return {
-    ...rest,
-    id,
-    description: description[locale],
-    hours: hours?.[locale],
-    photo: photo && { ...photo, alt: photo.alt[locale] },
-    searchText: normalizeSearchText(searchable.join(" \n ")),
-  };
-}
-
-/** Published, in-scope locations only. Drafts never leave the server. */
-export function getPublicCatalog(locale: Locale): PublicPlace[] {
-  const source =
-    process.env.CATALOG === "fixture" ? fixtureCandidates : candidates;
-  return source.flatMap((candidate) => {
-    const location = publishable(candidate);
-    return location ? [toPublicPlace(candidate.id, location, locale)] : [];
-  });
 }

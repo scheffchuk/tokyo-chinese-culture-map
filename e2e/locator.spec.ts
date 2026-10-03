@@ -71,6 +71,7 @@ test.describe("search and filters", () => {
     };
 
     await expectOnly("神田測試", /神田テスト書店/);
+    await expectOnly("神田测试书店", /神田テスト書店/);
     await expectOnly("烏龍", /茶居/);
     await expectOnly("中国茶", /茶居/);
     await expectOnly("test gallery", /ＴＥＳＴ/);
@@ -140,7 +141,9 @@ test.describe("selection, popup and sharing", () => {
 
   test("directions open Google Maps at the published coordinates", async ({ page }) => {
     await page.goto("/?place=fx-shinagawa-tea");
-    await expect(page.getByRole("link", { name: "Googleマップで経路" })).toHaveAttribute(
+    await expect(
+      page.getByRole("article").getByRole("link", { name: "Googleマップで経路" }),
+    ).toHaveAttribute(
       "href",
       "https://www.google.com/maps/dir/?api=1&destination=35.6053,139.7038",
     );
@@ -174,6 +177,17 @@ test.describe("selection, popup and sharing", () => {
       fresh.getByRole("article", { name: "Details for ＴＥＳＴ　Ｇａｌｌｅｒｙ" }),
     ).toContainText("Gallery focused on photography shows.");
     await fresh.close();
+  });
+
+  test("browser back restores the search the url had", async ({ page }) => {
+    await page.goto("/");
+    await page.getByLabel("スポットを検索").fill("茶");
+    await result(page, /茶居/).click();
+    await page.getByLabel("スポットを検索").fill("神田");
+    await expect(page.getByLabel("スポットを検索")).toHaveValue("神田");
+    await page.goBack();
+    await expect(page.getByLabel("スポットを検索")).toHaveValue("茶");
+    await expect(result(page, /茶居/)).toBeVisible();
   });
 
   test("browser back and forward move between selections", async ({ page }) => {
@@ -266,6 +280,12 @@ test.describe("accessibility and resilience", () => {
     await page.getByLabel("スポットを検索").fill("茶居");
     await expect(page.getByText("1件のスポット")).toBeVisible();
     await result(page, /茶居/).click();
-    await expect(page.getByRole("link", { name: "Googleマップで経路" })).toBeVisible();
+    await expect(results(page)).toContainText("東京都品川区旗の台3-1");
+    await expect(
+      results(page).getByRole("link", { name: "Googleマップで経路" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("article").getByRole("link", { name: "Googleマップで経路" }),
+    ).toBeVisible();
   });
 });

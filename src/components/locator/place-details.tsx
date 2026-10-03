@@ -32,7 +32,11 @@ export function PlaceDetails({
   async function copyLink() {
     const url = new URL(window.location.pathname, window.location.origin);
     url.searchParams.set("place", place.id);
-    await navigator.clipboard.writeText(url.toString());
+    try {
+      await navigator.clipboard.writeText(url.toString());
+    } catch {
+      return;
+    }
     setCopied(true);
   }
 

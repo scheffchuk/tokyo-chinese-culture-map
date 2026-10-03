@@ -17,7 +17,7 @@ pnpm test:e2e:live     # one smoke check against the real OpenFreeMap basemap
 
 ## Editing the catalog
 
-All entries live in `src/catalog/places.ts`, one `Candidate` per source entry. The public catalog (`getPublicCatalog` in `src/catalog/catalog.ts`) only includes a candidate when:
+All entries live in `src/catalog/places.ts`, one `Candidate` per source entry. The public catalog (`getPublicCatalog` in `src/catalog/publish.ts`, server-only) only includes a candidate when:
 
 - `status` is `"published"`,
 - it has a `location`,

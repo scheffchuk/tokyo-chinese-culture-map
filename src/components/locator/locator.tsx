@@ -12,22 +12,25 @@ import { cn } from "@/lib/utils";
 import { LocatorMap } from "./locator-map";
 import { PlaceList } from "./place-list";
 
-function pick<T extends string>(options: readonly T[], value: string | null) {
-  return options.find((option) => option === value) ?? null;
-}
-
 /** Search, filters, selection and mobile view live in the URL so links and language switches restore them. */
 export function Locator({ places }: { places: PublicPlace[] }) {
   const t = useTranslations();
   const searchParams = useSearchParams();
   const [nearMe, setNearMe] = useState<NearMe>({ status: "idle" });
   // Local so typing never waits on a URL round-trip; mirrored into `?q=`.
-  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const urlQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(urlQuery);
+  const [urlQuerySeen, setUrlQuerySeen] = useState(urlQuery);
+  // Back/forward changes `?q=` without going through the input handler.
+  if (urlQuery !== urlQuerySeen) {
+    setUrlQuerySeen(urlQuery);
+    setQuery(urlQuery);
+  }
 
   const filters: PlaceFilters = {
     query,
-    category: pick(CATEGORIES, searchParams.get("category")),
-    ward: pick(WARDS, searchParams.get("ward")),
+    category: CATEGORIES.find((id) => id === searchParams.get("category")) ?? null,
+    ward: WARDS.find((id) => id === searchParams.get("ward")) ?? null,
   };
   const view = searchParams.get("view") === "map" ? "map" : "list";
   const selectedId = searchParams.get("place");

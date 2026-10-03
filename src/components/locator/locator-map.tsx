@@ -51,7 +51,7 @@ function LocalizedLabels() {
     if (!map) return;
     const keys =
       locale === "zh-Hant"
-        ? ["name:zh-Hant", "name:zh"]
+        ? ["name:zh-Hant"]
         : locale === "en"
           ? ["name:en", "name_en"]
           : ["name:ja"];
