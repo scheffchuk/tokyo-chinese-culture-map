@@ -49,6 +49,7 @@
   "place": {
     "details": "{name}の詳細",
     "alternateNames": "別名",
+    "tags": "特徴",
     "address": "住所",
     "hours": "営業時間",
     "hoursUnknown": "営業時間の情報はありません。訪問前にご確認ください。",

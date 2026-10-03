@@ -12,4 +12,16 @@ test("the real OpenFreeMap basemap renders with attribution", async ({ page }) =
   await expect(page.getByText("OpenStreetMap")).toBeVisible({ timeout: 30_000 });
   await expect.poll(() => tiles.some((url) => url.endsWith(".pbf")), { timeout: 30_000 }).toBe(true);
   await expect(page.getByText("The background map couldn't load")).toHaveCount(0);
+  await expect(page.locator("[data-label-locale='en']")).toHaveAttribute(
+    "data-label-keys",
+    "name:en name_en",
+    { timeout: 30_000 },
+  );
+
+  await page.goto("/zh-Hant");
+  await expect(page.locator("[data-label-locale='zh-Hant']")).toHaveAttribute(
+    "data-label-keys",
+    "name:zh-Hant",
+    { timeout: 30_000 },
+  );
 });

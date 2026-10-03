@@ -93,6 +93,15 @@ export function PlaceDetails({
           <p className="text-muted-foreground mt-1">
             {t(`categories.${place.category}`)} · {t(`wards.${place.ward}`)}
           </p>
+          {place.tags.length > 0 && (
+            <ul aria-label={t("place.tags")} className="mt-1.5 flex flex-wrap gap-1">
+              {place.tags.map((tag) => (
+                <li key={tag} className="bg-muted rounded-full px-1.5 py-0.5">
+                  {t(`tags.${tag}`)}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <p>{place.description}</p>

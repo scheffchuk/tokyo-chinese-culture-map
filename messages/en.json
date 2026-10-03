@@ -49,6 +49,7 @@
   "place": {
     "details": "Details for {name}",
     "alternateNames": "Also known as",
+    "tags": "Tags",
     "address": "Address",
     "hours": "Hours",
     "hoursUnknown": "Opening hours unavailable. Check before visiting.",

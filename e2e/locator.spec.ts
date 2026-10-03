@@ -33,6 +33,9 @@ test.describe("publication and language", () => {
     await result(page, /神田テスト書店/).click();
     const details = page.getByRole("article", { name: "Details for 神田テスト書店" });
     await expect(details).toContainText("Bookstores · Chiyoda");
+    await expect(details.getByRole("list", { name: "Tags" })).toContainText(
+      "Chinese-language books",
+    );
     await expect(details).toContainText("Bookshop specialising in Chinese-language humanities.");
     await expect(details).toContainText("東京都千代田区神田神保町1-1");
     await expect(details).toContainText("11:00–19:00 (closed Mon)");
@@ -230,6 +233,25 @@ test.describe("near me", () => {
     await expect(names.first()).toContainText("茶居");
     await expect(names.first()).toContainText(/0 km away/);
     await expect(names.last()).toContainText("神田テスト書店");
+  });
+
+  test("a language change keeps the distance sort without asking again", async ({
+    page,
+  }) => {
+    await stubGeolocation(page, { lat: 35.605, lng: 139.704 });
+    await page.goto("/en");
+    await page.getByRole("button", { name: "Near me" }).click();
+    await expect(page.getByText("Sorted by straight-line distance")).toBeVisible();
+    expect(await geoCalls(page)).toBe(1);
+
+    await page.getByRole("link", { name: "日本語" }).click();
+    await expect(page.getByText("現在地からの直線距離順")).toBeVisible();
+    expect(await geoCalls(page)).toBe(1);
+    await expect(results(page).getByRole("button").first()).toContainText("茶居");
+
+    await page.reload();
+    await expect(page.getByText("現在地からの直線距離順")).toBeVisible();
+    expect(await geoCalls(page)).toBe(0);
   });
 
   test("near me keeps category filters active", async ({ page }) => {
