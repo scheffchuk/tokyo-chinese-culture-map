@@ -36,3 +36,17 @@ Flat reference. Every line must change behaviour vs default.
 - `next/font` + `next/script` when applicable
 - Above-fold `next/image`: `sync`/`eager`; `priority` sparingly
 - Watch serialized prop size RSC → client
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `scheffchuk/tokyo-chinese-culture-map`, via `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`); all already exist on the repo. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: root `GLOSSARY.md` + `docs/adr/`, created lazily. See `docs/agents/domain.md`.
