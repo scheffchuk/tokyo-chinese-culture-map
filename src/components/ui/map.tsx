@@ -209,6 +209,11 @@ type MapProps = {
    * to enable controlled mode where the map viewport is driven by your state.
    */
   onViewportChange?: (viewport: MapViewport) => void;
+  /**
+   * Fired for MapLibre `error` events, including a failed initial style load
+   * that would happen before any child could subscribe via `useMap`.
+   */
+  onError?: (event: MapLibreGL.ErrorEvent, map: MapLibreGL.Map) => void;
   /** Show a loading indicator on the map */
   loading?: boolean;
 } & Omit<MapLibreGL.MapOptions, "container" | "style">;
@@ -245,6 +250,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     projection,
     viewport,
     onViewportChange,
+    onError,
     loading = false,
     ...props
   },
@@ -264,6 +270,8 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
 
   const onViewportChangeRef = useRef(onViewportChange);
   onViewportChangeRef.current = onViewportChange;
+  const onErrorRef = useRef(onError);
+  onErrorRef.current = onError;
 
   const stableStyles = useStableValue(styles);
 
@@ -316,12 +324,19 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       onViewportChangeRef.current?.(getViewport(map));
     };
 
+    const errorHandler = (event: MapLibreGL.ErrorEvent) => {
+      if (onErrorRef.current) onErrorRef.current(event, map);
+      else console.error(event.error);
+    };
+
     map.on("load", loadHandler);
     map.on("style.load", styleLoadHandler);
     map.on("move", handleMove);
+    map.on("error", errorHandler);
     setMapInstance(map);
 
     return () => {
+      map.off("error", errorHandler);
       map.off("load", loadHandler);
       map.off("style.load", styleLoadHandler);
       map.off("move", handleMove);

@@ -42,11 +42,11 @@ function FlyToSelected({ place }: { place?: PublicPlace }) {
 
 /** Point basemap labels at the interface language, falling back to the local name. */
 function LocalizedLabels() {
-  const { map, isLoaded } = useMap();
+  const { map } = useMap();
   const locale = useLocale();
 
   useEffect(() => {
-    if (!map || !isLoaded) return;
+    if (!map) return;
     const keys =
       locale === "zh-Hant"
         ? ["name:zh-Hant", "name:zh"]
@@ -58,35 +58,24 @@ function LocalizedLabels() {
       ...keys.map((key): ExpressionSpecification => ["get", key]),
       ["get", "name"],
     ];
-    for (const layer of map.getStyle().layers) {
-      if (layer.type !== "symbol") continue;
-      const current = map.getLayoutProperty(layer.id, "text-field");
-      if (current && JSON.stringify(current).includes("name")) {
-        map.setLayoutProperty(layer.id, "text-field", textField);
+    // Runs on style load rather than full load so the original labels never flash.
+    const relabel = () => {
+      for (const layer of map.getStyle().layers) {
+        if (layer.type !== "symbol") continue;
+        const current = map.getLayoutProperty(layer.id, "text-field");
+        if (current && JSON.stringify(current).includes("name")) {
+          map.setLayoutProperty(layer.id, "text-field", textField);
+        }
       }
-    }
-  }, [map, isLoaded, locale]);
+    };
+    if (map.isStyleLoaded()) relabel();
+    map.on("style.load", relabel);
+    return () => {
+      map.off("style.load", relabel);
+    };
+  }, [map, locale]);
 
   return null;
-}
-
-function MapFailureNotice() {
-  const { map } = useMap();
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    if (!map) return;
-    // Only failures before the style loads leave the map blank; later tile hiccups recover on their own.
-    const onError = () => {
-      if (!map.isStyleLoaded()) setFailed(true);
-    };
-    map.on("error", onError);
-    return () => {
-      map.off("error", onError);
-    };
-  }, [map]);
-
-  return failed ? <MapUnavailable /> : null;
 }
 
 function MapUnavailable() {
@@ -132,6 +121,8 @@ export function LocatorMap({
   onClearSelection: () => void;
   userPosition?: Position;
 }) {
+  const [basemapFailed, setBasemapFailed] = useState(false);
+
   return (
     <MapBoundary>
       <Map
@@ -141,10 +132,15 @@ export function LocatorMap({
         zoom={11}
         minZoom={9}
         maxZoom={18}
+        onError={(event, map) => {
+          // Only failures before the style loads leave the map blank; later tile hiccups recover on their own.
+          if (map.isStyleLoaded()) console.error(event.error);
+          else setBasemapFailed(true);
+        }}
       >
+        {basemapFailed && <MapUnavailable />}
         <MapControls showCompass />
         <LocalizedLabels />
-        <MapFailureNotice />
         <FlyToSelected place={selected} />
 
         {places.map((place) => (
@@ -187,7 +183,6 @@ export function LocatorMap({
             offset={26}
             closeOnClick={false}
             focusAfterOpen={false}
-            onClose={onClearSelection}
             className="w-72 max-w-[calc(100vw-2rem)] p-0"
           >
             <PlaceDetails place={selected} onClose={onClearSelection} />
